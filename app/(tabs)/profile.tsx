@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {useRouter} from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ImageBackground, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {ThemedView} from '@/components/ThemedView';
-import {ThemedText} from '@/components/ThemedText';
-import {ActivityIndicator, Button, Dialog, PaperProvider, Portal, Text} from 'react-native-paper';
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
+import { ActivityIndicator, Button, Dialog, PaperProvider, Portal, Text, Card } from 'react-native-paper';
 import API_URL from '@/config/config';
 
 type UserProfile = {
@@ -27,7 +27,7 @@ const ProfileScreen = () => {
         try {
             const token = await AsyncStorage.getItem('token');
             const response = await axios.get<{ data: UserProfile }>(`${API_URL}/api/profile`, {
-                headers: {Authorization: `Bearer ${token}`},
+                headers: { Authorization: `Bearer ${token}` },
             });
             setProfile(response.data.data);
         } catch (error) {
@@ -50,7 +50,7 @@ const ProfileScreen = () => {
         return (
             <PaperProvider>
                 <ThemedView style={styles.container}>
-                    <ActivityIndicator animating={true}/>
+                    <ActivityIndicator animating={true} color="#FF9800" />
                 </ThemedView>
             </PaperProvider>
         );
@@ -58,34 +58,47 @@ const ProfileScreen = () => {
 
     return (
         <PaperProvider>
-            <ThemedView style={styles.container}>
-                {profile ? (
-                    <ThemedView>
-                        <ThemedText style={styles.title}>Profile</ThemedText>
-                        <ThemedText style={styles.label}>Username:</ThemedText>
-                        <ThemedText style={styles.value}>{profile.username}</ThemedText>
-                        <ThemedText style={styles.label}>Email:</ThemedText>
-                        <ThemedText style={styles.value}>{profile.email}</ThemedText>
-                        <Button mode="contained" onPress={handleLogout} style={styles.logoutButton}>
-                            Log Out
-                        </Button>
-                    </ThemedView>
-                ) : (
-                    <ThemedText>No profile data available</ThemedText>
-                )}
-                <Portal>
-                    <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
-                        <Dialog.Title>Logout</Dialog.Title>
-                        <Dialog.Content>
-                            <Text>Are you sure you want to logout?</Text>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button onPress={() => setDialogVisible(false)}>Cancel</Button>
-                            <Button onPress={confirmLogout}>OK</Button>
-                        </Dialog.Actions>
-                    </Dialog>
-                </Portal>
-            </ThemedView>
+            {/* ImageBackground with a transparent overlay */}
+            <ImageBackground
+                source={{ uri: 'https://i.pinimg.com/474x/89/42/bb/8942bbf2e528340515ee12496b285ffd.jpg' }}
+                style={styles.container}
+                imageStyle={styles.backgroundImage}
+                resizeMode="cover"
+            >
+                <ThemedView style={styles.overlayContainer}>
+                    <Card style={styles.profileCard} elevation={6}>
+                        <Card.Content>
+                            <ThemedText style={[styles.title, { color: '#FF9800' }]}>Profile</ThemedText>
+                            {profile ? (
+                                <>
+                                    <ThemedText style={[styles.label, { color: '#FF5722' }]}>Username:</ThemedText>
+                                    <ThemedText style={[styles.value, { color: '#FFAB91' }]}>{profile.username}</ThemedText>
+                                    <ThemedText style={[styles.label, { color: '#FF5722' }]}>Email:</ThemedText>
+                                    <ThemedText style={[styles.value, { color: '#FFAB91' }]}>{profile.email}</ThemedText>
+                                </>
+                            ) : (
+                                <ThemedText style={{ color: '#FFFFFF' }}>No profile data available</ThemedText>
+                            )}
+                            <Button mode="contained" onPress={handleLogout} style={styles.logoutButton} buttonColor="#FF9800">
+                                Log Out
+                            </Button>
+                        </Card.Content>
+                    </Card>
+
+                    <Portal>
+                        <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
+                            <Dialog.Title style={styles.dialogTitle}>Logout</Dialog.Title>
+                            <Dialog.Content>
+                                <Text style={styles.dialogText}>Are you sure you want to logout?</Text>
+                            </Dialog.Content>
+                            <Dialog.Actions>
+                                <Button onPress={() => setDialogVisible(false)} textColor="#FF5722">Cancel</Button>
+                                <Button onPress={confirmLogout} textColor="#FF5722">OK</Button>
+                            </Dialog.Actions>
+                        </Dialog>
+                    </Portal>
+                </ThemedView>
+            </ImageBackground>
         </PaperProvider>
     );
 };
@@ -97,24 +110,51 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
     },
+    overlayContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)', // Transparent overlay for better contrast
+        width: '100%',
+        height: '100%',
+        padding: 16,
+    },
+    backgroundImage: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+    },
+    profileCard: {
+        width: '90%',
+        backgroundColor: 'rgba(38, 50, 56, 0.8)', // Semi-transparent background for card
+        borderRadius: 16,
+        padding: 20,
+    },
     title: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 24,
-        color: '#333',
+        textAlign: 'center',
     },
     label: {
         fontSize: 18,
         fontWeight: 'bold',
         marginTop: 16,
-        color: '#333',
     },
     value: {
         fontSize: 18,
-        color: '#666',
+        marginTop: 4,
+        marginBottom: 16,
     },
     logoutButton: {
-        marginTop: 24,
+        marginTop: 16,
+        marginBottom: 8,
+        borderRadius: 8,
+    },
+    dialogTitle: {
+        color: '#FF9800',
+    },
+    dialogText: {
+        color: '#FFFFFF',
     },
 });
 

@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import {Image, StyleSheet, Text, TextInput, TouchableOpacity} from "react-native";
-import {useRouter} from "expo-router";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {ThemedView} from "@/components/ThemedView";
-import {Button, Dialog, PaperProvider, Portal} from "react-native-paper";
+import { ThemedView } from "@/components/ThemedView";
+import { Button, Dialog, PaperProvider, Portal } from "react-native-paper";
 import API_URL from "../../config/config";
 
 export default function LoginScreen() {
@@ -41,9 +41,9 @@ export default function LoginScreen() {
     return (
         <PaperProvider>
             <ThemedView style={styles.container}>
-                <Image source={require("../../assets/images/icon.png")} style={styles.logo} />
-                <Text style={styles.title}>Welcome Back!</Text>
-                <Text style={styles.subtitle}>Log in to continue</Text>
+            <Image source={{ uri: 'https://i.pinimg.com/474x/20/fa/9f/20fa9f99f41820d2e7141d0c40f81709.jpg' }} style={styles.logo} />
+                <Text style={styles.title}>Selamat Datang di Boboiboy Galaxy!</Text>
+                <Text style={styles.subtitle}>Masuk untuk melanjutkan petualangan</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
@@ -59,14 +59,14 @@ export default function LoginScreen() {
                     secureTextEntry
                 />
                 <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                    <Text style={styles.loginButtonText}>Login</Text>
+                    <Text style={styles.loginButtonText}>Masuk</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.registerButton} onPress={() => router.push("/auth/RegisterScreen")}>
-                    <Text style={styles.registerButtonText}>Register</Text>
+                    <Text style={styles.registerButtonText}>Daftar</Text>
                 </TouchableOpacity>
                 <Portal>
                     <Dialog visible={dialogVisible} onDismiss={handleDialogDismiss}>
-                        <Dialog.Title>{isSuccess ? "Success" : "Login Failed"}</Dialog.Title>
+                        <Dialog.Title>{isSuccess ? "Berhasil" : "Gagal Masuk"}</Dialog.Title>
                         <Dialog.Content>
                             <Text>{dialogMessage}</Text>
                         </Dialog.Content>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 16,
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#0D1B2A",
     },
     logo: {
         width: 150,
@@ -95,51 +95,53 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
     title: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: "bold",
         marginBottom: 8,
-        color: "#333",
+        color: "#FFD700",
     },
     subtitle: {
         fontSize: 16,
         marginBottom: 24,
-        color: "#666",
+        color: "#FFF",
     },
     input: {
         width: "100%",
-        height: 48,
-        borderColor: "#ccc",
+        height: 50,
+        borderColor: "#FFD700",
         borderWidth: 1,
-        borderRadius: 8,
+        borderRadius: 10,
         paddingHorizontal: 12,
         marginBottom: 16,
-        backgroundColor: "#fff",
+        backgroundColor: "#1B263B",
+        color: "#FFF",
     },
     loginButton: {
         width: "100%",
-        height: 48,
-        backgroundColor: "#007BFF",
-        borderRadius: 8,
+        height: 50,
+        backgroundColor: "#FFD700",
+        borderRadius: 10,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 16,
     },
     loginButtonText: {
-        color: "#fff",
+        color: "#0D1B2A",
         fontSize: 16,
         fontWeight: "600",
     },
     registerButton: {
         width: "100%",
-        height: 48,
+        height: 50,
         borderWidth: 1,
-        borderColor: "#007BFF",
-        borderRadius: 8,
+        borderColor: "#FFD700",
+        borderRadius: 10,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#1B263B",
     },
     registerButtonText: {
-        color: "#007BFF",
+        color: "#FFD700",
         fontSize: 16,
         fontWeight: "600",
     },
